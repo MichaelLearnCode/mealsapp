@@ -8,14 +8,12 @@ class CategoryGridItem extends StatelessWidget {
     required this.onCategoryTap,
   });
   final Category category;
-  final void Function(BuildContext context, Category category) onCategoryTap;
+  final void Function() onCategoryTap;
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () {
-        onCategoryTap(context, category);
-      },
+      onTap: onCategoryTap,
       borderRadius: BorderRadius.circular(15),
       splashColor: Theme.of(context).primaryColor,
       child: Container(

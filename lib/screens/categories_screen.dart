@@ -1,26 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:meals_app/data/dummy_data.dart';
 import 'package:meals_app/models/meal.dart';
+import 'package:meals_app/providers/filters_provider.dart';
 import 'package:meals_app/widgets/category_grid_item.dart';
 import 'package:meals_app/screens/meal_screen.dart';
 import 'package:meals_app/models/category.dart';
 
-class CategoriesScreen extends StatelessWidget {
-  const CategoriesScreen({
-    super.key,
-    required this.onFavouriteTap,
-    required this.filteredMeals,
-  });
+class CategoriesScreen extends ConsumerWidget {
+  const CategoriesScreen({super.key});
 
-  final void Function(Meal meal) onFavouriteTap;
-  final List<Meal> filteredMeals;
-
-  void _onCategoryTap(BuildContext context, Category category) {
+  void _onCategoryTap(
+    BuildContext context,
+    Category category,
+    List<Meal> filteredMeals,
+  ) {
     Navigator.push(
       context,
       MaterialPageRoute(
         builder: (ctx) => MealScreen(
-          onFavouriteTap: onFavouriteTap,
           title: category.title,
           meals: filteredMeals
               .where((meal) => meal.categories.contains(category.id))
@@ -31,7 +29,8 @@ class CategoriesScreen extends StatelessWidget {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final filteredMeals = ref.watch(filteredMealsProvider);
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 20),
       child: GridView(
@@ -45,7 +44,9 @@ class CategoriesScreen extends StatelessWidget {
           for (final category in availableCategories)
             CategoryGridItem(
               category: category,
-              onCategoryTap: _onCategoryTap,
+              onCategoryTap: () {
+                _onCategoryTap(context, category, filteredMeals);
+              },
             ),
         ],
       ),
