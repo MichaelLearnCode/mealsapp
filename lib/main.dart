@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:meals_app/screens/categories_screen.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:meals_app/screens/tabs_screen.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final theme = ThemeData(
   colorScheme: ColorScheme.fromSeed(
@@ -12,6 +13,8 @@ final theme = ThemeData(
 
 void main() {
   runApp(
-    MaterialApp(theme: theme, home: CategoriesScreen()),
+    ProviderScope(
+      child: MaterialApp(theme: theme, home: TabsScreen()),
+    ),
   );
 }
